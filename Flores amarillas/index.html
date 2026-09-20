@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e1a16">
+<title>Tengo algo para ti 🌻</title>
+<meta property="og:title" content="Tengo algo para ti 🌻">
+<meta property="og:description" content="Toca la pantalla y mira qué florece.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌻</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --noche:#0e1a16;
+  --musgo:#1f3a2d;
+  --hoja:#3f8a54;
+  --girasol:#f7c81f;
+  --ambar:#e8920e;
+  --crema:#fff3d1;
+  --tinta:#4a3410;
+  --serif:"Fraunces",Georgia,serif;
+  --mano:"Caveat","Segoe Print","Bradley Hand",cursive;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:radial-gradient(90% 60% at 50% 35%,var(--musgo) 0%,var(--noche) 72%);
+  color:var(--crema);
+  font-family:var(--serif);
+  overflow:hidden;
+  touch-action:manipulation;
+  -webkit-user-select:none;user-select:none;
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* ---------- Jardín ---------- */
+#jardin{position:fixed;inset:0;overflow:hidden}
+#petalos{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
+#flores{position:absolute;inset:0;z-index:1;pointer-events:none}
+.suelo{
+  position:absolute;left:-10%;right:-10%;bottom:-2%;height:14%;z-index:2;pointer-events:none;
+  background:radial-gradient(120% 100% at 50% 0,#1f4530 0,#12261b 60%,#0b1712 100%);
+  border-radius:50% 50% 0 0 / 40% 40% 0 0;
+}
+.titulo{
+  position:absolute;z-index:4;left:0;right:0;margin:0;
+  top:max(4.5vh,calc(env(safe-area-inset-top) + 16px));
+  padding:0 24px;text-align:center;pointer-events:none;
+  font:500 clamp(26px,7.4vw,44px)/1.12 var(--serif);
+  text-wrap:balance;letter-spacing:-.01em;
+  text-shadow:0 2px 24px rgba(0,0,0,.5);
+  animation:aparece 1.4s .7s both;
+}
+.pista{
+  position:absolute;z-index:4;left:50%;transform:translateX(-50%);
+  bottom:calc(env(safe-area-inset-bottom) + 3.4vh);
+  width:max-content;max-width:88vw;margin:0;text-align:center;
+  font:italic 400 18px/1.3 var(--serif);color:var(--crema);
+  pointer-events:none;transition:opacity .45s;
+  animation:aparece 1.2s 1.8s both;
+}
+.pista.cambia{opacity:0}
+.pista.final{color:var(--girasol)}
+@keyframes aparece{from{opacity:0}}
+
+/* ---------- Flores ---------- */
+.flor{position:absolute;width:0;height:var(--h);pointer-events:none;transition:opacity .9s ease}
+.flor.adios{opacity:0}
+.sway{
+  position:absolute;left:0;top:0;width:0;height:100%;transform-origin:50% 100%;
+  animation:sway var(--sw,5s) ease-in-out var(--d,0s) infinite alternate;
+}
+@keyframes sway{from{transform:rotate(-2.2deg)}to{transform:rotate(2.2deg)}}
+.tallo{
+  position:absolute;left:-1.5px;bottom:0;width:3px;height:100%;border-radius:2px;
+  background:linear-gradient(#56a86a,#2b6a3f);
+  transform-origin:50% 100%;
+  animation:crecer var(--g) cubic-bezier(.22,.8,.3,1) both;
+}
+@keyframes crecer{from{transform:scaleY(0)}}
+.hoja{
+  position:absolute;bottom:var(--b);width:34px;height:17px;overflow:visible;
+  animation:hoja .6s calc(var(--g) * .75) cubic-bezier(.3,1.4,.5,1) both;
+}
+.hoja.izq{left:-34px;transform-origin:100% 50%}
+.hoja.der{left:0;transform-origin:0 50%}
+@keyframes hoja{from{transform:scale(0) rotate(var(--r))}to{transform:scale(1) rotate(var(--r))}}
+.cabeza{
+  position:absolute;left:calc(var(--s) * -.5);top:calc(var(--s) * -.5);
+  width:var(--s);height:var(--s);pointer-events:none;
+  animation:subir var(--g) cubic-bezier(.22,.8,.3,1) both;
+}
+.cabeza svg{
+  display:block;width:100%;height:100%;overflow:visible;
+  filter:drop-shadow(0 0 10px rgba(247,200,31,.35));
+  animation:abrir .8s var(--g) cubic-bezier(.3,1.5,.5,1) both;
+}
+@keyframes subir{from{transform:translateY(var(--h))}}
+@keyframes abrir{from{transform:scale(0) rotate(-120deg)}}
+
+.central .cabeza{pointer-events:auto;cursor:pointer;outline:none}
+.central .cabeza:focus-visible svg{filter:drop-shadow(0 0 0 #fff) drop-shadow(0 0 14px #fff)}
+.halo{
+  position:absolute;inset:-45%;border-radius:50%;
+  background:radial-gradient(circle,rgba(247,200,31,.4),rgba(247,200,31,0) 62%);
+  animation:latido 2.8s 1.8s ease-in-out infinite backwards;
+}
+@keyframes latido{0%,100%{opacity:.5;transform:scale(.92)}50%{opacity:1;transform:scale(1.08)}}
+
+/* ---------- Modal ---------- */
+.modal{
+  position:fixed;inset:0;z-index:10;display:flex;overflow-y:auto;
+  padding:max(20px,env(safe-area-inset-top)) 16px max(20px,env(safe-area-inset-bottom));
+  background:rgba(8,14,11,.84);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  opacity:0;visibility:hidden;transition:opacity .5s,visibility 0s .5s;
+}
+.modal.on{opacity:1;visibility:visible;transition-delay:0s}
+.cerrar{
+  position:fixed;z-index:12;top:max(12px,env(safe-area-inset-top));right:14px;
+  width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;
+  background:rgba(255,243,209,.14);color:var(--crema);font:400 26px/1 var(--serif);
+}
+
+/* Sobre */
+.zona{
+  position:fixed;z-index:11;left:50%;top:50%;width:min(84vw,340px);
+  transform:translate(-50%,-50%);perspective:900px;text-align:center;
+  transition:opacity .6s ease,transform .6s ease;
+}
+.zona[hidden]{display:none}
+.zona.fuera{opacity:0;transform:translate(-50%,-42%) scale(.95);pointer-events:none}
+.sobre{
+  position:relative;display:block;width:100%;aspect-ratio:3/2;padding:0;border:0;background:none;
+  cursor:pointer;filter:drop-shadow(0 18px 30px rgba(0,0,0,.45));
+}
+.modal.on .sobre{animation:llega .9s .15s cubic-bezier(.2,.9,.3,1) both}
+@keyframes llega{from{opacity:0;transform:translateY(26px) scale(.94)}}
+.modal .sobre.no{animation:no .5s}
+@keyframes no{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.sobre span{position:absolute;display:block}
+.s-atras{inset:0;background:#d9a413;border-radius:6px;z-index:1}
+.s-carta{
+  left:7%;right:7%;top:7%;height:86%;z-index:2;border-radius:4px;background-color:var(--crema);
+  background-image:repeating-linear-gradient(transparent 0 17px,rgba(74,52,16,.13) 17px 18px);
+  background-position:0 14px;
+  transition:transform .9s cubic-bezier(.3,.9,.3,1) .55s;
+}
+.s-frente{
+  inset:0;z-index:3;border-radius:6px;background:linear-gradient(160deg,#f9cf2e,#eeb912);
+  clip-path:polygon(0 0,50% 56%,100% 0,100% 100%,0 100%);
+}
+.s-solapa{
+  left:0;top:0;width:100%;height:56%;z-index:4;transform-origin:50% 0;
+  background:linear-gradient(#ffdc55,#f4c31c);
+  clip-path:polygon(0 0,100% 0,50% 100%);
+}
+.s-sello{
+  left:50%;top:56%;z-index:5;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;
+  background:#2b6a3f;box-shadow:0 2px 6px rgba(0,0,0,.35),inset 0 0 0 3px rgba(255,255,255,.12);
+  display:grid;place-items:center;
+}
+.s-sello svg{width:30px;height:30px;overflow:visible}
+.sobre.abierto .s-solapa{animation:solapa .8s ease forwards}
+.sobre.abierto .s-carta{transform:translateY(-58%)}
+.sobre.abierto .s-sello{animation:sello .35s forwards}
+@keyframes solapa{
+  0%{transform:rotateX(0);z-index:4}
+  49%{z-index:4}
+  50%{z-index:0}
+  100%{transform:rotateX(180deg);z-index:0}
+}
+@keyframes sello{to{opacity:0;transform:scale(.3)}}
+.cuenta{
+  margin:26px 0 0;min-height:1.4em;font:italic 400 18px/1.4 var(--serif);
+  color:var(--crema);font-variant-numeric:tabular-nums;
+}
+
+/* Carta */
+.papel{
+  display:none;position:relative;margin:auto;width:min(92vw,420px);padding:26px 24px 30px;
+  border-radius:10px;background:#fff4d4;color:var(--tinta);
+  box-shadow:0 24px 60px rgba(0,0,0,.5);
+  -webkit-user-select:text;user-select:text;
+}
+.papel.visible{display:block;animation:entra .9s cubic-bezier(.2,.9,.3,1) both}
+@keyframes entra{from{opacity:0;transform:translateY(40px) scale(.94)}}
+.papel:focus{outline:none}
+.ramo{display:block;width:min(100%,250px);height:auto;margin:0 auto}
+.ramo .tr{fill:none;stroke:#3f8a54;stroke-width:3.4;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
+.ramo .cab{transform-box:fill-box;transform-origin:center;opacity:0}
+.ramo .hj,.ramo .cono{opacity:0}
+.papel.visible .tr{animation:dibujar 1s var(--d) ease-out forwards}
+.papel.visible .cab{animation:pop .7s calc(var(--d) + .75s) cubic-bezier(.3,1.5,.5,1) forwards}
+.papel.visible .hj,.papel.visible .cono{animation:aparece2 .6s .2s forwards}
+@keyframes dibujar{to{stroke-dashoffset:0}}
+@keyframes pop{from{opacity:1;transform:scale(0) rotate(-90deg)}to{opacity:1;transform:none}}
+@keyframes aparece2{to{opacity:1}}
+.papel h2{margin:8px 0 16px;text-align:center;font:italic 400 30px/1.15 var(--serif);color:var(--tinta)}
+.papel p{margin:0 0 12px;font:500 23px/1.32 var(--mano)}
+.polaroid{
+  position:relative;width:78%;margin:26px auto 10px;padding:9px 9px 10px;background:#fff;
+  box-shadow:0 6px 18px rgba(60,40,0,.25);transform:rotate(-2.5deg);
+}
+.polaroid::before{
+  content:"";position:absolute;top:-11px;left:50%;width:74px;height:22px;margin-left:-37px;
+  background:rgba(247,200,31,.6);transform:rotate(3deg);
+}
+.polaroid img,.polaroid .vacio{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
+.polaroid .vacio{display:grid;place-items:center;padding:14px;text-align:center;background:#f3ead0;color:#8a6a1a;font:500 18px/1.3 var(--mano)}
+.polaroid figcaption{margin-top:8px;text-align:center;font:600 24px/1 var(--mano);color:var(--tinta)}
+.firma{margin:14px 6px 0;text-align:right;font:600 30px/1 var(--mano)}
+
+@media (prefers-reduced-motion:reduce){
+  .sway{animation:none}
+  .halo{animation:none;opacity:.7}
+}
+</style>
+</head>
+
+<body>
+  <audio id="musica" src="musica.mp3" loop></audio>
+<main id="jardin" aria-label="Jardín interactivo">
+  <canvas id="petalos"></canvas>
+  <div id="flores"></div>
+  <div class="suelo"></div>
+  <h1 class="titulo">Siembra tu jardin de flores amarillas</h1>
+  <p class="pista" id="pista">Toca la pantalla para hacer florecer el jardín</p>
+</main>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Tu carta" aria-hidden="true" inert>
+  <button class="cerrar" id="cerrar" aria-label="Cerrar">&times;</button>
+
+  <div class="zona" id="zona">
+    <button class="sobre" id="sobre" aria-label="Abrir el sobre">
+      <span class="s-atras"></span>
+      <span class="s-carta"></span>
+      <span class="s-frente"></span>
+      <span class="s-solapa"></span>
+      <span class="s-sello" id="sello"></span>
+    </button>
+    
+    <p class="cuenta" id="cuenta" aria-live="polite"></p>
+  </div>
+
+  <article class="papel" id="papel" tabindex="-1">
+    <svg class="ramo" id="ramo" viewBox="0 0 240 224" role="img" aria-label="Ramo de flores amarillas"></svg>
+    <h2 id="para"></h2>
+    <div id="texto"></div>
+    <figure class="polaroid" id="foto"><figcaption id="pie"></figcaption></figure>
+    <div class="firma" id="firma"></div>
+  </article>
+</div>
+
+<script>
+/* ==========================================================
+   ✏️  EDITA SOLO ESTA PARTE
+   ========================================================== */
+const CONFIG = {
+  para: "mi Boo",            // "Para mi Boo"
+  de: "Mochito",            // Soy tu Boo
+  foto: "foto.jpeg",           // imagen en la misma carpeta que index.html ("" = sin foto)
+  musica: "musica.mp3",
+  pie: "Nosotros",            // texto bajo la foto
+  fechaApertura: null,        // null = se abre cuando quiera. Para cuenta regresiva:
+                              // "2026-09-21T00:00:00-05:00"  (hora de Lima)
+  carta: [
+    "Hoy empieza la primavera y quise regalarte todas las flores amarillas del mundo. Como no me cabían en las manos, te hice un jardín virtual.",
+    "Cada vez que sonríes, algo florece por dentro. Gracias por ser mi sol, incluso en los días grises.",
+    "Ojalá este jardincito te dé una parte de la alegría que tú me das a mí. Te quiero muchísimo."
+  ]
+};
+/* ========================================================== */
+
+const $ = s => document.querySelector(s);
+const rnd = (a, b) => a + Math.random() * (b - a);
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- Cabezas de flor (SVG) ---------- */
+const CABEZAS = {
+  girasol() {
+    let s = '';
+    for (let i = 0; i < 14; i++) s += `<ellipse cx="0" cy="-33" rx="7.5" ry="16" fill="#eeae0c" transform="rotate(${i * 360 / 14})"/>`;
+    for (let i = 0; i < 14; i++) s += `<ellipse cx="0" cy="-30" rx="7" ry="14.5" fill="#f9d02e" transform="rotate(${(i + .5) * 360 / 14})"/>`;
+    s += `<circle r="19" fill="#7a4d16"/><circle r="15" fill="#4b2e0f"/>`;
+    for (let i = 1; i < 34; i++) {
+      const r = 2.55 * Math.sqrt(i), a = i * 2.39996;
+      s += `<circle cx="${(r * Math.cos(a)).toFixed(1)}" cy="${(r * Math.sin(a)).toFixed(1)}" r=".95" fill="#a0692a"/>`;
+    }
+    return s;
+  },
+  tulipan() {
+    return `<g transform="translate(0,14)">
+      <path d="M-3,-40 C-28,-34 -30,0 -2,12 C-19,-8 -15,-28 -3,-40Z" fill="#efb20f"/>
+      <path d="M3,-40 C28,-34 30,0 2,12 C19,-8 15,-28 3,-40Z" fill="#efb20f"/>
+      <path d="M0,-44 C-19,-30 -21,-2 0,13 C21,-2 19,-30 0,-44Z" fill="#ffd93d"/>
+      <path d="M0,-38 C-6,-22 -6,-6 0,8" stroke="#f2b90f" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    </g>`;
+  },
+  amarilis() {
+    const p = (rot, fill) => `<path d="M0,0 C-15,-12 -18,-34 0,-47 C18,-34 15,-12 0,0Z" fill="${fill}" transform="rotate(${rot})"/>`;
+    let s = '';
+    [60, 180, 300].forEach(r => s += p(r, '#e9a80f'));
+    [0, 120, 240].forEach(r => s += p(r, '#fcd535'));
+    [0, 120, 240].forEach(r => s += `<path d="M0,-6 L0,-36" stroke="#e2a10c" stroke-width="1.4" stroke-linecap="round" transform="rotate(${r})"/>`);
+    s += `<circle r="6" fill="#d98a06"/>`;
+    for (let i = 0; i < 6; i++) {
+      s += `<g transform="rotate(${i * 60 + 20})"><path d="M0,-4 Q3,-16 1,-24" stroke="#c77b05" stroke-width="1.2" fill="none"/><ellipse cx="1" cy="-25" rx="2" ry="3.2" fill="#8a4b04"/></g>`;
+    }
+    return s;
+  }
+};
+const _cache = {};
+const svgCabeza = t => _cache[t] || (_cache[t] = `<svg viewBox="-50 -50 100 100" aria-hidden="true">${CABEZAS[t]()}</svg>`);
+
+const TIPOS = {
+  girasol:  { min: 74, max: 104 },
+  tulipan:  { min: 50, max: 68 },
+  amarilis: { min: 78, max: 104 }
+};
+const PESOS = ['girasol', 'girasol', 'girasol', 'tulipan', 'tulipan', 'amarilis', 'amarilis', 'amarilis'];
+
+/* ---------- Tamaño y canvas ---------- */
+const cv = $('#petalos'), ctx = cv.getContext('2d');
+let W, H, groundY, moscas = [];
+function resize() {
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  W = innerWidth; H = innerHeight; groundY = H * .93;
+  cv.width = W * dpr; cv.height = H * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+/* ---------- Pétalos y luciérnagas ---------- */
+const COLORES = ['#f9d02e', '#fcd535', '#f7c81f', '#efb20f', '#ffe27a'];
+let parts = [], ultimo = 0;
+
+function petalo(x, y, vx, vy) {
+  parts.push({ x, y, vx, vy, rot: rnd(0, 6.28), vr: rnd(-.06, .06), s: rnd(4.5, 8.5),
+               c: pick(COLORES), f: rnd(0, 6.28), fv: rnd(.03, .08), ph: rnd(0, 6.28) });
+}
+function chorro(x, y, n) {
+  for (let i = 0; i < n; i++) {
+    const a = rnd(0, Math.PI * 2), v = rnd(1.5, 4.5);
+    petalo(x, y, Math.cos(a) * v, Math.sin(a) * v - 1.5);
+  }
+}
+function initMoscas() {
+  moscas = reduce ? [] : Array.from({ length: 16 }, () => ({
+    x: rnd(0, W), y: rnd(H * .3, H * .9), a: rnd(0, 6.28), v: rnd(.15, .4), ph: rnd(0, 6.28)
+  }));
+}
+function frame(t) {
+  ctx.clearRect(0, 0, W, H);
+
+  if (parts.length < 40 && t - ultimo > (reduce ? 1600 : 650)) {
+    petalo(rnd(0, W), -12, rnd(-.3, .3), rnd(.4, .9));
+    ultimo = t;
+  }
+
+  for (const m of moscas) {
+    m.a += rnd(-.06, .06);
+    m.x += Math.cos(m.a) * m.v; m.y += Math.sin(m.a) * m.v;
+    if (m.x < -10) m.x = W + 10; if (m.x > W + 10) m.x = -10;
+    if (m.y < H * .2) m.y = H * .2; if (m.y > groundY) m.y = groundY;
+    const al = .35 + .65 * Math.abs(Math.sin(t / 1100 + m.ph));
+    ctx.fillStyle = `rgba(255,224,102,${(al * .16).toFixed(3)})`;
+    ctx.beginPath(); ctx.arc(m.x, m.y, 7, 0, 6.283); ctx.fill();
+    ctx.fillStyle = `rgba(255,236,150,${al.toFixed(3)})`;
+    ctx.beginPath(); ctx.arc(m.x, m.y, 1.6, 0, 6.283); ctx.fill();
+  }
+
+  for (let i = parts.length - 1; i >= 0; i--) {
+    const p = parts[i];
+    p.vy += (.9 - p.vy) * .02;
+    p.vx *= .985;
+    p.f += p.fv; p.rot += p.vr;
+    p.x += p.vx + Math.sin(t / 900 + p.ph) * .45;
+    p.y += p.vy;
+    if (p.y > groundY + 10 || p.x < -20 || p.x > W + 20) { parts.splice(i, 1); continue; }
+    ctx.save();
+    ctx.globalAlpha = Math.min(1, (groundY + 10 - p.y) / 40);
+    ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+    ctx.scale(1, Math.abs(Math.cos(p.f)) * .75 + .25);
+    ctx.fillStyle = p.c;
+    const s = p.s;
+    ctx.beginPath();
+    ctx.moveTo(0, -s);
+    ctx.bezierCurveTo(s * .8, -s * .4, s * .6, s * .6, 0, s);
+    ctx.bezierCurveTo(-s * .6, s * .6, -s * .8, -s * .4, 0, -s);
+    ctx.fill();
+    ctx.restore();
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ---------- Plantar flores ---------- */
+const contenedor = $('#flores');
+const vivas = [];
+
+function plantar(x, y, { central = false, size } = {}) {
+  x = Math.min(Math.max(x, 28), W - 28);
+  y = Math.min(Math.max(y, H * .15), groundY - 40);
+  const h = groundY - y;
+  const tipo = central ? 'girasol' : pick(PESOS);
+  const s = size || Math.round(rnd(TIPOS[tipo].min, TIPOS[tipo].max));
+  const g = central ? 1.3 : rnd(.8, 1.1);
+
+  const hoja = (lado, b) => {
+    const r = lado === 'izq' ? rnd(18, 38) : -rnd(18, 38);
+    const d = lado === 'izq'
+      ? 'M40,10 C30,-4 10,-2 0,10 C10,22 30,20 40,10Z'
+      : 'M0,10 C10,-4 30,-2 40,10 C30,22 10,20 0,10Z';
+    return `<svg class="hoja ${lado}" style="--b:${b}%;--r:${r.toFixed(0)}deg" viewBox="0 0 40 20" aria-hidden="true"><path d="${d}" fill="${pick(['#3f8a54', '#4c9c60', '#367a49'])}"/></svg>`;
+  };
+  const hojas = h > 90 ? hoja('izq', rnd(18, 32).toFixed(0)) + hoja('der', rnd(38, 55).toFixed(0)) : '';
+
+  const el = document.createElement('div');
+  el.className = 'flor' + (central ? ' central' : '');
+  el.style.cssText = `left:${x}px;top:${y}px;height:${h}px;--h:${h}px;--s:${s}px;--g:${g}s;` +
+                     `--sw:${rnd(4, 7).toFixed(1)}s;--d:${(-rnd(0, 5)).toFixed(1)}s`;
+  el.innerHTML = `<div class="sway"><i class="tallo"></i>${hojas}` +
+                 `<div class="cabeza">${central ? '<span class="halo"></span>' : ''}${svgCabeza(tipo)}</div></div>`;
+  contenedor.appendChild(el);
+
+  if (central) {
+    const cab = el.querySelector('.cabeza');
+    cab.setAttribute('role', 'button');
+    cab.setAttribute('tabindex', '0');
+    cab.setAttribute('aria-label', 'Abrir tu carta');
+    cab.addEventListener('click', abrirModal);
+    cab.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirModal(); } });
+  } else {
+    vivas.push(el);
+    if (vivas.length > 34) {
+      const v = vivas.shift();
+      v.classList.add('adios');
+      setTimeout(() => v.remove(), 900);
+    }
+  }
+  setTimeout(() => chorro(x, y, central ? 24 : 9), g * 1000 + 450);
+}
+
+/* ---------- Pista que cambia ---------- */
+const pista = $('#pista');
+let toques = 0;
+function cambiarPista(txt, final) {
+  pista.classList.add('cambia');
+  setTimeout(() => {
+    pista.textContent = txt;
+    pista.classList.toggle('final', !!final);
+    pista.classList.remove('cambia');
+  }, 450);
+}
+$('#jardin').addEventListener('pointerdown', e => {
+  if (e.target.closest('.central')) return;
+  plantar(e.clientX, e.clientY);
+  navigator.vibrate && navigator.vibrate(12);
+  toques++;
+  if (toques === 1) cambiarPista('Sigue tocando: cada toque es una flor');
+  if (toques === 5) cambiarPista('Ahora toca la flor grande 🌻', true);
+});
+
+/* ---------- Ramo (ilustración de la carta) ---------- */
+function armarRamo() {
+  const items = [
+    { t: 'tulipan',  x: 44,  y: 128, k: .62, d: .15 },
+    { t: 'amarilis', x: 196, y: 130, k: .80, d: .25 },
+    { t: 'amarilis', x: 66,  y: 88,  k: .90, d: .35 },
+    { t: 'tulipan',  x: 176, y: 88,  k: .74, d: .45 },
+    { t: 'girasol',  x: 120, y: 64,  k: 1.05, d: .60 }
+  ];
+  let s = `<g class="hj" fill="#3f8a54">
+      <path d="M120,182 C96,164 84,142 90,120 C110,130 124,154 120,182Z"/>
+      <path d="M120,182 C144,164 156,142 150,120 C130,130 116,154 120,182Z" fill="#367a49"/>
+    </g>`;
+  items.forEach(i => {
+    const qx = (120 + i.x) / 2, qy = (190 + i.y) / 2 + 10;
+    s += `<path class="tr" pathLength="1" style="--d:${i.d}s" d="M120,192 Q${qx},${qy} ${i.x},${i.y + i.k * 18}"/>`;
+  });
+  items.forEach(i => {
+    s += `<g transform="translate(${i.x},${i.y}) scale(${i.k})"><g class="cab" style="--d:${i.d}s">${CABEZAS[i.t]()}</g></g>`;
+  });
+  s += `<g class="cono">
+      <path d="M70,148 Q120,172 170,148 L128,218 L112,218Z" fill="#d9b56c"/>
+      <path d="M120,162 L170,148 L128,218Z" fill="#e8cd8c"/>
+      <path d="M93,167 Q120,181 147,167 L143,178 Q120,192 97,178Z" fill="#2b6a3f"/>
+      <ellipse cx="108" cy="186" rx="9" ry="5" fill="#2b6a3f" transform="rotate(20 108 186)"/>
+      <ellipse cx="132" cy="186" rx="9" ry="5" fill="#2b6a3f" transform="rotate(-20 132 186)"/>
+      <circle cx="120" cy="184" r="3.6" fill="#1f5230"/>
+    </g>`;
+  $('#ramo').innerHTML = s;
+}
+
+/* ---------- Contenido de la carta ---------- */
+function armarCarta() {
+  $('#para').textContent = `Para ti, ${CONFIG.para}`;
+  CONFIG.carta.forEach(t => { const p = document.createElement('p'); p.textContent = t; $('#texto').append(p); });
+  $('#firma').textContent = `— ${CONFIG.de}`;
+
+  const fig = $('#foto');
+  if (!CONFIG.foto) { fig.remove(); return; }
+  $('#pie').textContent = CONFIG.pie || '';
+  const img = new Image();
+  img.alt = CONFIG.pie || 'Foto';
+  img.onerror = () => {
+    const v = document.createElement('div');
+    v.className = 'vacio';
+    v.textContent = `Aquí va tu foto: guarda una imagen como ${CONFIG.foto} junto a index.html`;
+    img.replaceWith(v);
+  };
+  img.src = CONFIG.foto;
+  fig.prepend(img);
+}
+
+/* ---------- Modal, sobre y cuenta regresiva ---------- */
+const modal = $('#modal'), sobre = $('#sobre'), zona = $('#zona'), papel = $('#papel'), cuentaEl = $('#cuenta');
+let abierta = false, reloj = null;
+
+const listo = () => !CONFIG.fechaApertura || Date.now() >= new Date(CONFIG.fechaApertura).getTime();
+
+function pintarCuenta() {
+  if (abierta || sobre.classList.contains('abierto')) { cuentaEl.textContent = ''; return; }
+  if (listo()) { cuentaEl.textContent = 'Esta carta es para ti mi amor, tocalo para abrirlo'; return; }
+  let s = Math.max(0, Math.ceil((new Date(CONFIG.fechaApertura) - Date.now()) / 1000));
+  const d = Math.floor(s / 86400); s %= 86400;
+  const h = Math.floor(s / 3600);  s %= 3600;
+  const m = Math.floor(s / 60);    s %= 60;
+  const p = n => String(n).padStart(2, '0');
+  cuentaEl.textContent = `Se abre en ${d ? d + ' d ' : ''}${p(h)}:${p(m)}:${p(s)}`;
+}
+
+function abrirModal() {
+  modal.inert = false;
+  modal.setAttribute('aria-hidden', 'false');
+  modal.classList.add('on');
+  chorro(W / 2, H * .42, 30);
+  if (abierta) {
+    zona.hidden = true;
+    papel.classList.add('visible');
+  } else {
+    pintarCuenta();
+    reloj = setInterval(pintarCuenta, 1000);
+    sobre.focus({ preventScroll: true });
+  }
+}
+function cerrarModal() {
+  modal.classList.remove('on');
+  modal.inert = true;
+  modal.setAttribute('aria-hidden', 'true');
+  clearInterval(reloj);
+  const cab = document.querySelector('.central .cabeza');
+  cab && cab.focus({ preventScroll: true });
+}
+
+sobre.addEventListener('click', () => {
+  if (abierta || sobre.classList.contains('abierto')) return;
+  if (!listo()) {
+    sobre.classList.remove('no'); void sobre.offsetWidth; sobre.classList.add('no');
+    return;
+  }
+  sobre.classList.add('abierto');
+  cuentaEl.textContent = '';
+  navigator.vibrate && navigator.vibrate(20);
+  setTimeout(() => {
+    abierta = true;
+    zona.classList.add('fuera');
+    papel.classList.add('visible');
+    modal.scrollTop = 0;
+    chorro(W / 2, H * .5, 26);
+  }, 2000);
+  setTimeout(() => { zona.hidden = true; papel.focus({ preventScroll: true }); }, 2700);
+});
+$('#cerrar').addEventListener('click', cerrarModal);
+modal.addEventListener('click', e => { if (e.target === modal || e.target === zona) cerrarModal(); });
+addEventListener('keydown', e => { if (e.key === 'Escape') cerrarModal(); });
+
+/* ---------- Arranque ---------- */
+$('#sello').innerHTML = svgCabeza('girasol');
+armarRamo();
+armarCarta();
+resize(); initMoscas();
+addEventListener('resize', resize);
+plantar(W / 2, H * .42, { central: true, size: Math.min(190, W * .52) });
+requestAnimationFrame(frame);
+const audio = new Audio('musica.mp3');
+audio.loop = true;
+
+document.addEventListener('click', () => {
+  audio.play();
+}, { once: true });
+</script>
+</body>
+</html>
