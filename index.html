@@ -222,13 +222,13 @@ body{
 </head>
 
 <body>
-  <audio id="musica" src="musica.mp3" loop></audio>
+  <audio id="musica" src="flores.mp3" loop></audio>
 <main id="jardin" aria-label="Jardín interactivo">
   <canvas id="petalos"></canvas>
   <div id="flores"></div>
   <div class="suelo"></div>
   <h1 class="titulo">Siembra tu jardin de flores amarillas</h1>
-  <p class="pista" id="pista">Toca la pantalla para hacer florecer el jardín</p>
+  <p class="pista" id="pista">Toca la pantalla para hacer florecer tu jardín</p>
 </main>
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Tu carta" aria-hidden="true" inert>
@@ -256,21 +256,19 @@ body{
 </div>
 
 <script>
-/* ==========================================================
-   ✏️  EDITA SOLO ESTA PARTE
-   ========================================================== */
+
 const CONFIG = {
   para: "mi Boo",            // "Para mi Boo"
   de: "Mochito",            // Soy tu Boo
   foto: "foto.jpeg",           // imagen en la misma carpeta que index.html ("" = sin foto)
-  musica: "musica.mp3",
+  musica: "flores.mp3",
   pie: "Nosotros",            // texto bajo la foto
   fechaApertura: null,        // null = se abre cuando quiera. Para cuenta regresiva:
                               // "2026-09-21T00:00:00-05:00"  (hora de Lima)
   carta: [
-    "Hoy empieza la primavera y quise regalarte todas las flores amarillas del mundo. Como no me cabían en las manos, te hice un jardín virtual y puedas teberlo donde quieras.",
+    "Hoy empieza la primavera y quise regalarte todas las flores amarillas del mundo. Pero como no me cabían en las manos, te hice un jardín que nunca perecerá.",
     "Cada vez que sonríes, algo florece por dentro. Gracias por ser mi sol y mi boo, incluso en los días grises.",
-    "Ojalá este jardincito te dé una parte de la alegría que tú me das a mí. Te amor mi amor"
+    "Ojalá este jardincito te dé una parte de la alegría que tú me das a mí. Te amo."
   ]
 };
 /* ========================================================== */
@@ -460,7 +458,7 @@ $('#jardin').addEventListener('pointerdown', e => {
   plantar(e.clientX, e.clientY);
   navigator.vibrate && navigator.vibrate(12);
   toques++;
-  if (toques === 1) cambiarPista('Sigue tocando: cada toque es una flor');
+  if (toques === 1) cambiarPista('Haz florecer tu jardín: cada toque es una flor mi amor');
   if (toques === 5) cambiarPista('Ahora toca la flor grande 🌻', true);
 });
 
@@ -524,7 +522,7 @@ const listo = () => !CONFIG.fechaApertura || Date.now() >= new Date(CONFIG.fecha
 
 function pintarCuenta() {
   if (abierta || sobre.classList.contains('abierto')) { cuentaEl.textContent = ''; return; }
-  if (listo()) { cuentaEl.textContent = 'Esta carta es para ti mi amor, tocalo para abrirlo'; return; }
+  if (listo()) { cuentaEl.textContent = 'Para: Marisol Vera (Mi boo)'; return; }
   let s = Math.max(0, Math.ceil((new Date(CONFIG.fechaApertura) - Date.now()) / 1000));
   const d = Math.floor(s / 86400); s %= 86400;
   const h = Math.floor(s / 3600);  s %= 3600;
@@ -586,7 +584,7 @@ resize(); initMoscas();
 addEventListener('resize', resize);
 plantar(W / 2, H * .42, { central: true, size: Math.min(190, W * .52) });
 requestAnimationFrame(frame);
-const audio = new Audio('musica.mp3');
+const audio = new Audio('flores.mp3');
 audio.loop = true;
 
 document.addEventListener('click', () => {
